@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Register() {
   return (
@@ -13,7 +14,7 @@ export default function Register() {
                     Antiquely
                   </h1>
                 </div>
-               
+
                 <form>
                   <div className="relative w-full mb-3">
                     <label
@@ -78,12 +79,14 @@ export default function Register() {
                   </div>
 
                   <div className="text-center mt-6">
-                    <button
-                      className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-                      type="button"
-                    >
-                      Create Account
-                    </button>
+                    <Link to="/admin/dashboard" className="text-blueGray-200">
+                      <button
+                        className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                        type="button"
+                      >
+                        Create Account
+                      </button>
+                    </Link>
                   </div>
                 </form>
               </div>
