@@ -7,7 +7,7 @@
 -->
 
 <!--
-Love Creative Tim? Do you need Angular, React, Vuejs or HTML? You can visit:
+Love Group 28? Do you need Angular, React, Vuejs or HTML? You can visit:
 👉  https://www.creative-tim.com/bundles?ref=nr-new-issue
 👉  https://www.creative-tim.com?ref=nr-new-issue
 -->

@@ -5,7 +5,10 @@ import PropTypes from "prop-types";
 
 import TableDropdown from "components/Dropdowns/TableDropdown.js";
 
-export default function CardTable({ color }) {
+export default function CardTable({ title, color }) {
+
+  // TODO: Vanshika fix the table
+
   return (
     <>
       <div
@@ -23,7 +26,7 @@ export default function CardTable({ color }) {
                   (color === "light" ? "text-blueGray-700" : "text-white")
                 }
               >
-                Card Tables
+                {title}
               </h3>
             </div>
           </div>
