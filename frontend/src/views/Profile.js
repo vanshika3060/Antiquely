@@ -6,8 +6,6 @@ import Footer from "components/Footers/Footer.js";
 export default function Profile() {
   return (
     <>
-      {/* TODO: @Vanshika Fix this content to align with Antiquely */}
-      {/* Done */}
       <Navbar transparent />
       <main className="profile-page">
         <section className="relative block h-500-px">
