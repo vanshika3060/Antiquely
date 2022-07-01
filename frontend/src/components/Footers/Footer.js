@@ -3,7 +3,6 @@ import React from "react";
 export default function Footer() {
   return (
     <>
-      {/* TODO: @Vanshika Fix this content to align with Antiquely */}
       <footer className="relative bg-blueGray-200 pt-8 pb-6">
         <div className="container mx-auto px-4">
           <hr className="my-6 border-blueGray-300" />

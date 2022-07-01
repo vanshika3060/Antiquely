@@ -9,26 +9,16 @@ export default function Index() {
   return (
     <>
      <IndexNavbar />
-      {/* TODO: @Vanshika Fix this content to align with Antiquely */}
       <section className="header relative pt-16 items-center flex h-screen max-h-860-px">
         <div className="container mx-auto items-center flex flex-wrap">
           <div className="w-full md:w-8/12 lg:w-6/12 xl:w-6/12 px-4">
             <div className="pt-32 sm:pt-0">
               <h2 className="font-semibold text-4xl text-blueGray-600">
-                Notus React - A beautiful extension for Tailwind CSS.
+                Antiquely: One stop destination for valuable antiques
               </h2>
               <p className="mt-4 text-lg leading-relaxed text-blueGray-500">
-                Notus React is Free and Open Source. It does not change any of
-                the CSS from{" "}
-                <a
-                  href="https://tailwindcss.com/?ref=creativetim"
-                  className="text-blueGray-600"
-                  target="_blank"
-                >
-                  Tailwind CSS
-                </a>
-                . It features multiple HTML elements and it comes with dynamic
-                components for ReactJS, Vue and Angular.
+                Antiquely is a free online retail platform where retailers can advertise their vintage/antique products for auction and buyers can bid and buy it and mark it for their own at a fair market price .
+                
               </p>
               <div className="mt-12">
                 <a
@@ -76,7 +66,7 @@ export default function Index() {
               <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg bg-lightBlue-500">
                 <img
                   alt="..."
-                  src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80"
+                  src="https://images.unsplash.com/photo-1635719921169-288afcd9b128?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=869&q=80"
                   className="w-full align-middle rounded-t-lg"
                 />
                 <blockquote className="relative p-8 mb-4">
@@ -92,13 +82,10 @@ export default function Index() {
                     ></polygon>
                   </svg>
                   <h4 className="text-xl font-bold text-white">
-                    Great for your awesome project
+                    Buy antiques for you and your loved ones
                   </h4>
                   <p className="text-md font-light mt-2 text-white">
-                    Putting together a page has never been easier than matching
-                    together pre-made components. From landing pages
-                    presentation to login areas, you can easily customise and
-                    built your pages.
+                    Having a variety of valuables at one destination has never been found easier. Here, we help you find the perfect selection of anything you want at a good market price.
                   </p>
                 </blockquote>
               </div>
@@ -113,11 +100,10 @@ export default function Index() {
                         <i className="fas fa-sitemap"></i>
                       </div>
                       <h6 className="text-xl mb-1 font-semibold">
-                        CSS Components
+                        Advertising products
                       </h6>
                       <p className="mb-4 text-blueGray-500">
-                        Notus React comes with a huge number of Fully Coded CSS
-                        components.
+                        Antiquely comes with a huge number of sellers advertising their products. Join the team of sellers if you want to make money by selling your loved valuables.
                       </p>
                     </div>
                   </div>
@@ -127,11 +113,10 @@ export default function Index() {
                         <i className="fas fa-drafting-compass"></i>
                       </div>
                       <h6 className="text-xl mb-1 font-semibold">
-                        JavaScript Components
+                        Bidding never became this easy
                       </h6>
                       <p className="mb-4 text-blueGray-500">
-                        We also feature many dynamic components for React,
-                        NextJS, Vue and Angular.
+                        Shopping can become burdensome for pickers when looking for antiques where bargaining becomes a major part. Here, we make it easy for you by letting you bid on products online making it quick and simple for anyone to get things for a fair price.
                       </p>
                     </div>
                   </div>
@@ -142,27 +127,13 @@ export default function Index() {
                       <div className="text-blueGray-500 p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-white">
                         <i className="fas fa-newspaper"></i>
                       </div>
-                      <h6 className="text-xl mb-1 font-semibold">Pages</h6>
+                      <h6 className="text-xl mb-1 font-semibold">Buying products</h6>
                       <p className="mb-4 text-blueGray-500">
-                        This extension also comes with 3 sample pages. They are
-                        fully coded so you can start working instantly.
+                        We provide you with a huge variety of antiques to satisfy your shoppping cravings all at one stop.
                       </p>
                     </div>
                   </div>
-                  <div className="relative flex flex-col min-w-0">
-                    <div className="px-4 py-5 flex-auto">
-                      <div className="text-blueGray-500 p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-white">
-                        <i className="fas fa-file-alt"></i>
-                      </div>
-                      <h6 className="text-xl mb-1 font-semibold">
-                        Documentation
-                      </h6>
-                      <p className="mb-4 text-blueGray-500">
-                        Built by developers for developers. You will love how
-                        easy is to to work with Notus React.
-                      </p>
-                    </div>
-                  </div>
+            
                 </div>
               </div>
             </div>
@@ -176,37 +147,35 @@ export default function Index() {
                 <i className="fas fa-sitemap text-xl"></i>
               </div>
               <h3 className="text-3xl mb-2 font-semibold leading-normal">
-                CSS Components
+                Advertising products
               </h3>
               <p className="text-lg font-light leading-relaxed mt-4 mb-4 text-blueGray-600">
-                Every element that you need in a product comes built in as a
-                component. All components fit perfectly with each other and can
-                have different colours.
+                Just upload the products that you want to sell with a minimum bidding price and a start time. Take the advertisement off when you feel satisfied with the offered price.
               </p>
               <div className="block pb-6">
                 <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Buttons
+                  Paintings
                 </span>
                 <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Inputs
+                  Jewellwery
                 </span>
                 <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Labels
+                  Crockery
                 </span>
                 <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Menus
+                  Show-piece
                 </span>
                 <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Navbars
+                  Vases
                 </span>
                 <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Pagination
+                  Costumes
                 </span>
                 <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Progressbars
+                  Coins & Money
                 </span>
                 <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Typography
+                  Memorabilia
                 </span>
               </div>
               <a
@@ -221,34 +190,25 @@ export default function Index() {
 
             <div className="w-full md:w-5/12 px-4 mr-auto ml-auto mt-32">
               <div className="relative flex flex-col min-w-0 w-full mb-6 mt-48 md:mt-0">
+            
                 <img
                   alt="..."
-                  src={require("assets/img/component-btn.png").default}
-                  className="w-full align-middle rounded absolute shadow-lg max-w-100-px z-3 left-145-px -top-29-px"
-                />
-                <img
-                  alt="..."
-                  src={require("assets/img/component-profile-card.png").default}
+                  src={require("assets/img/seller.jpg").default}
                   className="w-full align-middle rounded-lg absolute shadow-lg -top-160-px left-260-px max-w-210-px"
                 />
                 <img
                   alt="..."
-                  src={require("assets/img/component-info-card.png").default}
+                  src={require("assets/img/auction.jpg").default}
                   className="w-full align-middle rounded-lg absolute shadow-lg max-w-180-px -top-225-px left-40-px z-2"
                 />
                 <img
                   alt="..."
-                  src={require("assets/img/component-info-2.png").default}
+                  src={require("assets/img/paintings.jpg").default}
                   className="w-full align-middle rounded-lg absolute shadow-2xl max-w-200-px -left-50-px top-25-px"
                 />
                 <img
                   alt="..."
-                  src={require("assets/img/component-menu.png").default}
-                  className="w-full align-middle rounded absolute shadow-lg max-w-580-px -left-20-px top-210-px"
-                />
-                <img
-                  alt="..."
-                  src={require("assets/img/component-btn-pink.png").default}
+                  src={require("assets/img/place-bid2.jpg").default}
                   className="w-full align-middle rounded absolute shadow-xl max-w-120-px left-195-px top-95-px"
                 />
               </div>
@@ -267,10 +227,10 @@ export default function Index() {
                       <img
                         alt="..."
                         className="shadow-md rounded-full max-w-full w-16 mx-auto p-2 bg-white"
-                        src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/svelte.jpg"
+                        src="https://previews.123rf.com/images/powerart/powerart1708/powerart170805746/84860645-isolated-drawing-outline-symbol-on-clean-background-vector-painting-element-in-trendy-style-.jpg"
                       />
                       <p className="text-lg text-white mt-4 font-semibold">
-                        Svelte
+                        Paintings
                       </p>
                     </div>
                   </a>
@@ -282,10 +242,10 @@ export default function Index() {
                       <img
                         alt="..."
                         className="shadow-md rounded-full max-w-full w-16 mx-auto p-2 bg-white"
-                        src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/react.jpg"
+                        src="https://thumbs.dreamstime.com/b/ring-icon-line-pixel-perfect-style-jewellery-symbol-web-design-vector-pictogram-fortuneteller-fashion-wedding-171477157.jpg"
                       />
                       <p className="text-lg text-white mt-4 font-semibold">
-                        ReactJS
+                        Jewellwery
                       </p>
                     </div>
                   </a>
@@ -297,10 +257,10 @@ export default function Index() {
                       <img
                         alt="..."
                         className="shadow-md rounded-full max-w-full w-16 mx-auto p-2 bg-white"
-                        src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/nextjs.jpg"
+                        src="https://media.istockphoto.com/vectors/vector-image-of-a-flat-isolated-icon-dollar-sign-currency-exchange-vector-id1151557689?k=20&m=1151557689&s=612x612&w=0&h=SgftvPGhI2jYVS02mC65yWuff_SDNNrTM1wcV6Cpln8="
                       />
                       <p className="text-lg text-white mt-4 font-semibold">
-                        NextJS
+                        Coins & Money
                       </p>
                     </div>
                   </a>
@@ -314,10 +274,10 @@ export default function Index() {
                       <img
                         alt="..."
                         className="shadow-md rounded-full max-w-full w-16 mx-auto p-2 bg-white"
-                        src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/js.png"
+                        src="data:image/jpeg;base64,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"
                       />
                       <p className="text-lg text-white mt-4 font-semibold">
-                        JavaScript
+                        Home-Decor
                       </p>
                     </div>
                   </a>
@@ -329,28 +289,14 @@ export default function Index() {
                       <img
                         alt="..."
                         className="shadow-md rounded-full max-w-full w-16 mx-auto p-2 bg-white"
-                        src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/angular.jpg"
+                        src="https://media.istockphoto.com/vectors/chef-hat-icon-flat-vector-template-design-trendy-vector-id1222860305?k=20&m=1222860305&s=612x612&w=0&h=Y_defoWFhcRU6k5rDLAVyPYgWbAM94qB4zV5zenUlBM="
                       />
                       <p className="text-lg text-white mt-4 font-semibold">
-                        Angular
+                        Costumes
                       </p>
                     </div>
                   </a>
-                  <a
-                    href="https://www.creative-tim.com/learning-lab/tailwind/vue/alerts/notus?ref=vtw-index"
-                    target="_blank"
-                  >
-                    <div className="bg-emerald-500 shadow-lg rounded-lg text-center p-8 mt-8">
-                      <img
-                        alt="..."
-                        className="shadow-md rounded-full max-w-full w-16 mx-auto p-2 bg-white"
-                        src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/vue.jpg"
-                      />
-                      <p className="text-lg text-white mt-4 font-semibold">
-                        Vue.js
-                      </p>
-                    </div>
-                  </a>
+                 
                 </div>
               </div>
             </div>
@@ -360,139 +306,27 @@ export default function Index() {
                 <i className="fas fa-drafting-compass text-xl"></i>
               </div>
               <h3 className="text-3xl mb-2 font-semibold leading-normal">
-                Javascript Components
+                Bidding for Products
               </h3>
               <p className="text-lg font-light leading-relaxed mt-4 mb-4 text-blueGray-600">
-                In order to create a great User Experience some components
-                require JavaScript. In this way you can manipulate the elements
-                on the page and give more options to your users.
+    
+                We have a variety of products on which the pickers can place bids on any product they like. 
+                The process of auction takes place for a specfic duration of time where bidders can place bids on
+                any products available for bidding. The bidding results are then declared by the seller after closing the 
+                auction.
               </p>
-              <p className="text-lg font-light leading-relaxed mt-4 mb-4 text-blueGray-600">
-                We created a set of Components that are dynamic and come to help
-                you.
-              </p>
-              <div className="block pb-6">
-                <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Alerts
-                </span>
-                <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Dropdowns
-                </span>
-                <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Menus
-                </span>
-                <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Modals
-                </span>
-                <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Navbars
-                </span>
-                <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Popovers
-                </span>
-                <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Tabs
-                </span>
-                <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Tooltips
-                </span>
-              </div>
-              <a
-                href="https://www.creative-tim.com/learning-lab/tailwind/react/alerts/notus?ref=nr-index"
-                target="_blank"
-                className="font-bold text-blueGray-700 hover:text-blueGray-500 ease-linear transition-all duration-150"
-              >
-                View all{" "}
-                <i className="fa fa-angle-double-right ml-1 leading-relaxed"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div className="container mx-auto px-4 pb-32 pt-48">
-          <div className="items-center flex flex-wrap">
-            <div className="w-full md:w-5/12 ml-auto px-12 md:px-4">
-              <div className="md:pr-12">
-                <div className="text-blueGray-500 p-3 text-center inline-flex items-center justify-center w-16 h-16 mb-6 shadow-lg rounded-full bg-white">
-                  <i className="fas fa-file-alt text-xl"></i>
-                </div>
-                <h3 className="text-3xl font-semibold">
-                  Complex Documentation
-                </h3>
-                <p className="mt-4 text-lg leading-relaxed text-blueGray-500">
-                  This extension comes a lot of fully coded examples that help
-                  you get started faster. You can adjust the colors and also the
-                  programming language. You can change the text and images and
-                  you're good to go.
-                </p>
-                <ul className="list-none mt-6">
-                  <li className="py-2">
-                    <div className="flex items-center">
-                      <div>
-                        <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-blueGray-50 mr-3">
-                          <i className="fas fa-fingerprint"></i>
-                        </span>
-                      </div>
-                      <div>
-                        <h4 className="text-blueGray-500">
-                          Built by Developers for Developers
-                        </h4>
-                      </div>
-                    </div>
-                  </li>
-                  <li className="py-2">
-                    <div className="flex items-center">
-                      <div>
-                        <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-blueGray-50 mr-3">
-                          <i className="fab fa-html5"></i>
-                        </span>
-                      </div>
-                      <div>
-                        <h4 className="text-blueGray-500">
-                          Carefully crafted code for Components
-                        </h4>
-                      </div>
-                    </div>
-                  </li>
-                  <li className="py-2">
-                    <div className="flex items-center">
-                      <div>
-                        <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-blueGray-50 mr-3">
-                          <i className="far fa-paper-plane"></i>
-                        </span>
-                      </div>
-                      <div>
-                        <h4 className="text-blueGray-500">
-                          Dynamic Javascript Components
-                        </h4>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="w-full md:w-6/12 mr-auto px-4 pt-24 md:pt-0">
-              <img
-                alt="..."
-                className="max-w-full rounded-lg shadow-xl"
-                style={{
-                  transform:
-                    "scale(1) perspective(1040px) rotateY(-11deg) rotateX(2deg) rotate(2deg)",
-                }}
-                src={require("assets/img/documentation.png").default}
-              />
+             
+              
             </div>
           </div>
         </div>
 
         <div className="justify-center text-center flex flex-wrap mt-24">
           <div className="w-full md:w-6/12 px-12 md:px-4">
-            <h2 className="font-semibold text-4xl">Beautiful Example Pages</h2>
+            <h2 className="font-semibold text-4xl">About Antiquely</h2>
             <p className="text-lg leading-relaxed mt-4 mb-4 text-blueGray-500">
-              Notus React is a completly new product built using our past
-              experience in web templates. Take the examples we made for you and
-              start playing with them.
+              Antiquley is all about providing a platform for it users for buying, selling and bidding for 
+              vintage/antique products.
             </p>
           </div>
         </div>
@@ -505,14 +339,14 @@ export default function Index() {
               <div className="flex flex-wrap">
                 <div className="w-full lg:w-4/12 px-4">
                   <h5 className="text-xl font-semibold pb-4 text-center">
-                    Login Page
+                    Buying
                   </h5>
                   <Link to="/auth/login">
                     <div className="hover:-mt-4 relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg ease-linear transition-all duration-150">
                       <img
                         alt="..."
                         className="align-middle border-none max-w-full h-auto rounded-lg"
-                        src={require("assets/img/login.jpg").default}
+                        src={require("assets/img/buying.jpg").default}
                       />
                     </div>
                   </Link>
@@ -520,14 +354,14 @@ export default function Index() {
 
                 <div className="w-full lg:w-4/12 px-4">
                   <h5 className="text-xl font-semibold pb-4 text-center">
-                    Profile Page
+                  Selling
                   </h5>
                   <Link to="/profile">
                     <div className="hover:-mt-4 relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg ease-linear transition-all duration-150">
                       <img
                         alt="..."
                         className="align-middle border-none max-w-full h-auto rounded-lg"
-                        src={require("assets/img/profile.jpg").default}
+                        src={require("assets/img/selling.jpg").default}
                       />
                     </div>
                   </Link>
@@ -535,14 +369,14 @@ export default function Index() {
 
                 <div className="w-full lg:w-4/12 px-4">
                   <h5 className="text-xl font-semibold pb-4 text-center">
-                    Landing Page
+                    Bidding
                   </h5>
                   <Link to="/landing">
                     <div className="hover:-mt-4 relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg ease-linear transition-all duration-150">
                       <img
                         alt="..."
                         className="align-middle border-none max-w-full h-auto rounded-lg"
-                        src={require("assets/img/landing.jpg").default}
+                        src={require("assets/img/bidding.jpg").default}
                       />
                     </div>
                   </Link>
@@ -561,32 +395,21 @@ export default function Index() {
                 <i className="fas fa-code-branch text-xl"></i>
               </div>
               <h3 className="text-3xl mb-2 font-semibold leading-normal text-white">
-                Open Source
+                Online free platform
               </h3>
               <p className="text-lg font-light leading-relaxed mt-4 mb-4 text-blueGray-400">
-                Since{" "}
-                <a
-                  href="https://tailwindcss.com/?ref=creativetim"
-                  className="text-blueGray-300"
-                  target="_blank"
-                >
-                  Tailwind CSS
-                </a>{" "}
-                is an open source project we wanted to continue this movement
-                too. You can give this version a try to feel the design and also
-                test the quality of the code!
+               
+              Antiquely is a free online plaform where no buyers or sellers need to pay for using this platform.
+              You can give this application a try to feel the experience of shopping antiques online and also
+              buy them at a good market price and sell them reasonalby if you want.
+
+
               </p>
               <p className="text-lg font-light leading-relaxed mt-0 mb-4 text-blueGray-400">
-                Get it free on Github and please help us spread the news with a
+                Please help us spread the news with a
                 Star!
               </p>
-              <a
-                href="https://github.com/creativetimofficial/notus-react?ref=nr-index"
-                target="_blank"
-                className="github-star mt-4 inline-block text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-blueGray-700 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg"
-              >
-                Github Star
-              </a>
+            
             </div>
 
             <div className="w-full md:w-4/12 px-4 mr-auto ml-auto mt-32 relative">
