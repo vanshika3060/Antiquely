@@ -6,6 +6,9 @@ import PropTypes from "prop-types";
 import TableDropdown from "components/Dropdowns/TableDropdown.js";
 
 export default function CardTable({ title, color }) {
+
+  // TODO: Vanshika fix the table
+
   return (
     <>
       <div
