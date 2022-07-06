@@ -1,10 +1,9 @@
-<<<<<<< HEAD
+
 import UserPool from "./UserPool";
 import React, { useState } from "react";
-=======
-import React from "react";
+
 import { Link } from "react-router-dom";
->>>>>>> 9fd3475174efeae72bcfd8efbbae84b102f9b92a
+
 
 export default function Register() {
 
@@ -39,11 +38,11 @@ export default function Register() {
                     Antiquely
                   </h1>
                 </div>
-<<<<<<< HEAD
+
                
                 <form >
                   {/* <div className="relative w-full mb-3">
-=======
+
 
                 <form>
                   <div className="relative w-full mb-3">
@@ -114,7 +113,7 @@ export default function Register() {
                   </div>
 
                   <div className="text-center mt-6">
-<<<<<<< HEAD
+
                     <button
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                       type="button"
@@ -122,7 +121,7 @@ export default function Register() {
                     >
                       Create Account
                     </button>
-=======
+
                     <Link to="/admin/dashboard" className="text-blueGray-200">
                       <button
                         className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
@@ -131,7 +130,7 @@ export default function Register() {
                         Create Account
                       </button>
                     </Link>
->>>>>>> 9fd3475174efeae72bcfd8efbbae84b102f9b92a
+
                   </div>
                 </form>
               </div>
