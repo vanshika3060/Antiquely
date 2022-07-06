@@ -55,8 +55,6 @@ export default function Login() {
                 <hr className="mt-6 border-b-1 border-blueGray-300" />
               </div>
               <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-
-               
                 <form onSubmit={onSubmit}>
 
                   <div className="relative w-full mb-3">
@@ -121,13 +119,12 @@ export default function Login() {
             
             <div className="flex flex-wrap mt-6 relative">
               <div className="w-1/2">
-                <a
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  className="text-blueGray-200"
-                >
+                
+                  <Link to="/auth/forgotpassword" className="text-blueGray-200">
                   <small>Forgot password?</small>
-                </a>
+                  </Link>
+                  
+           
               </div>
               <div className="w-1/2 text-right">
                 <Link to="/auth/register" className="text-blueGray-200">
