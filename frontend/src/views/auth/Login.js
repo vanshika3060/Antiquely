@@ -1,7 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import UserPool from "./UserPool";
+import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
 
 export default function Login() {
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onSubmit = (event) => {
+
+    event.preventDefault();
+
+    const user = new CognitoUser({
+      Username: email,
+      Pool: UserPool
+    });
+
+    const authDetails = new AuthenticationDetails({
+      Username: email,
+      Password: password,
+    });
+
+    user.authenticateUser(authDetails, {
+      onSuccess: (data) =>
+      {
+        console.log("on Success: ",data);
+      },
+      onFailure: (err) =>
+      {
+        console.error("on Failure: ",err);
+      },
+      newPasswordRequired: (data) =>
+      {
+        console.log("newPasswordRequired: ",data);
+      },
+
+    });
+  };
+
   return (
     <>
       <div className="container mx-auto px-4 h-full">
@@ -19,7 +56,7 @@ export default function Login() {
               </div>
               <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                
-                <form>
+                <form onSubmit={onSubmit}>
                   <div className="relative w-full mb-3">
                     <label
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -31,9 +68,12 @@ export default function Login() {
                       type="email"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Email"
+                      value={email}
+                      onChange={(event) => setEmail(event.target.value)}
                     />
                   </div>
 
+                  
                   <div className="relative w-full mb-3">
                     <label
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -45,6 +85,8 @@ export default function Login() {
                       type="password"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Password"
+                      value={password}
+                      onChange={(event) => setPassword(event.target.value)}
                     />
                   </div>
                   <div>
@@ -59,11 +101,10 @@ export default function Login() {
                       </span>
                     </label>
                   </div>
-
                   <div className="text-center mt-6">
                     <button
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-                      type="button"
+                      type="submit"
                     >
                       Sign In
                     </button>
@@ -71,6 +112,7 @@ export default function Login() {
                 </form>
               </div>
             </div>
+            
             <div className="flex flex-wrap mt-6 relative">
               <div className="w-1/2">
                 <a

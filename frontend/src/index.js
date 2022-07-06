@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { Amplify } from 'aws-amplify';
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -15,6 +16,9 @@ import Auth from "layouts/Auth.js";
 import Landing from "views/Landing.js";
 import Profile from "views/Profile.js";
 import Index from "views/Index.js";
+
+import awsExports from '../aws-exports';
+Amplify.configure(awsExports);
 
 ReactDOM.render(
   <BrowserRouter>
