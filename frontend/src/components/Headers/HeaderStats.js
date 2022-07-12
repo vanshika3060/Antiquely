@@ -37,9 +37,30 @@ export default function HeaderStats() {
                   statIconColor="bg-orange-500"
                 />
               </div>
-              
-         
-          
+              <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
+                <CardStats
+                  statSubtitle="Total Antiques Purchased"
+                  statTitle="60"
+                  statArrow="down"
+                  statPercent="3.48"
+                  statPercentColor="text-red-500"
+                  statDescripiron="Since last week"
+                  statIconName="fas fa-chart-pie"
+                  statIconColor="bg-orange-500"
+                />
+              </div>
+              <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
+                <CardStats
+                  statSubtitle="Total Amount Spent"
+                  statTitle="1,20,000 USD"
+                  statArrow="down"
+                  statPercent="3.48"
+                  statPercentColor="text-red-500"
+                  statDescripiron="Since last week"
+                  statIconName="fas fa-chart-pie"
+                  statIconColor="bg-orange-500"
+                />
+              </div>          
             </div>
           </div>
         </div>
