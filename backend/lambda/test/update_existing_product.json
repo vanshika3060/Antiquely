@@ -1,0 +1,20 @@
+{
+  "type": "TOKEN",
+  "authorizationToken": "incoming-client-token",
+  "methodArn": "arn:aws:execute-api:us-east-1:123456789012:example/prod/POST/{proxy+}",
+  "body": {
+    "table": "products",
+    "action": "UPDATE_EXISTING_PRODUCT",
+    "data": {
+      "product_id": "479b2a37-d472-4d3c-aa33-05edaf12528f",
+      "update_data": {
+        "product_name": "Antique Jewellery 5",
+        "product_minimum_bid_amount": 300,
+        "product_image_url": "https://test.s3.us-east-2.amazonaws.com/occupancy.csv",
+        "product_auction_start_date_time": "05/12/2022",
+        "product_auction_end_date_time": "07/12/2022",
+        "product_description": "This is an amazing product used by Queen Elizabeth."
+      }
+    }
+  }
+}

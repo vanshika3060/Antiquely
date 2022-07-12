@@ -1,0 +1,9 @@
+{
+  "type": "TOKEN",
+  "authorizationToken": "incoming-client-token",
+  "methodArn": "arn:aws:execute-api:us-east-1:123456789012:example/prod/POST/{proxy+}",
+  "body": {
+    "table": "products",
+    "action": "GET_ALL_PRODUCTS"
+  }
+}
