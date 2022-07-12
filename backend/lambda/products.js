@@ -206,12 +206,16 @@ exports.handler = async (event, context, callback) => {
         console.info("GET_ALL_PRODUCTS called.")
         return getProduct(info.table);
       case "GET_SPECIFIC_PRODUCT":
+        console.info("GET_SPECIFIC_PRODUCT called.")
         return getProduct(info.table, info.data);
       case "CREATE_NEW_PRODUCT":
+        console.info("CREATE_NEW_PRODUCT called.")
         return createProduct(info.table, info.data);
       case "UPDATE_EXISTING_PRODUCT":
+        console.info("UPDATE_EXISTING_PRODUCT called.")
         return updateProduct(info.table, info.data?.product_id, info.data?.update_data);
       case "DELETE_A_PRODUCT":
+        console.info("DELETE_A_PRODUCT called.")
         return deleteProduct(info.table, info.data)
       default:
         console.error("Please provide a valid action to perform.");
