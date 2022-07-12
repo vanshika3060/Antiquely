@@ -170,6 +170,43 @@ const updateBids = async (table, bid_id, data) => {
 
 /**
  * @author Bharatwaaj Shankaranarayanan
+ * @description Updates bid information into the database
+ * @param {String} table 
+ * @param {String} bid_id 
+ * @param {*} data 
+ * @returns {}
+ */
+ const updateUserBid = async (table, user_id, data) => {
+  try {
+    const expression = generateUpdateQuery(data);
+    const params = {
+      TableName: table,
+      Key: {
+        user_id: user_id,
+      },
+      ...expression,
+      ReturnValues: "UPDATED_NEW"
+    };
+    const response = await dynamodbClient.update(params).promise();
+    console.info("Successfully updated the bid.", response);
+    return {
+      message: "Successfully updated the bid.",
+      success: true,
+      data: response
+    };
+  } catch (err) {
+    console.error("Unable to update an existing bid.", err);
+    return {
+      message: "Unable to update an existing bid.",
+      success: false,
+      error: err
+    }
+  }
+};
+
+
+/**
+ * @author Bharatwaaj Shankaranarayanan
  * @description Deletes bid information from the database
  * @param {String} table 
  * @param {*} data 
@@ -247,6 +284,9 @@ exports.handler = async (event, context, callback) => {
       case "UPDATE_EXISTING_BID":
         console.info("UPDATE_EXISTING_BID called.")
         return updateBids(info.table, info.data?.bid_id, info.data?.update_data);
+      case "UPDATE_USER_BID":
+        console.info("UPDATE_USER_BID called.")
+        return updateUserBid(info.table, info.data?.bid_id, info.data?.update_data);
       case "DELETE_A_BID":
         console.info("DELETE_A_BID called.")
         return deleteBids(info.table, info.data)
