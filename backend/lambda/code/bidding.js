@@ -286,7 +286,7 @@ exports.handler = async (event, context, callback) => {
         return updateBids(info.table, info.data?.bid_id, info.data?.update_data);
       case "UPDATE_USER_BID":
         console.info("UPDATE_USER_BID called.")
-        return updateBids(info.table, info.data?.bid_id, info.data?.update_data);
+        return updateUserBid(info.table, info.data?.bid_id, info.data?.update_data);
       case "DELETE_A_BID":
         console.info("DELETE_A_BID called.")
         return deleteBids(info.table, info.data)
