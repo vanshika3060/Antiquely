@@ -45,6 +45,27 @@ const getProduct = async (table, data) => {
 
 /**
  * @author Bharatwaaj Shankaranarayanan
+ * @description Gets product status from the database
+ * @param {String} table 
+ * @param {*} data 
+ * @returns {Product} 
+ */
+const getProductStatus = (start, end) => {
+  const current_date = new Date();
+  const start_date = new Date(start);
+  const end_date = new Date(end);
+  
+  if(current_date <= start_date){
+    return "scheduled";
+  } else if (current_date >= start_date && current_date <= end_date){
+    return "on_sale";
+  } else if (current_date >= end_date){
+    return "completed";
+  }
+}
+
+/**
+ * @author Bharatwaaj Shankaranarayanan
  * @description Creates product information into the database
  * @param {String} table 
  * @param {*} data 
@@ -62,7 +83,9 @@ const createProduct = async (table, data) => {
         product_auction_start_date_time: new Date(data.product_auction_start_date_time).toString(),
         product_auction_end_date_time: new Date(data.product_auction_end_date_time).toString(),
         product_description: data.product_description,
+        product_status: getProductStatus(data.product_auction_start_date_time, data.product_auction_end_date_time)
       },
+      ReturnValues: "ALL_OLD"
     };
     const response = await dynamodbClient.put(params).promise();
     console.info("Successfully created a new product.", response);
@@ -191,6 +214,9 @@ const updateConfiguration = () => {
  */
 exports.handler = async (event, context, callback) => {
   
+  // Log event data
+  console.info("event", event);
+  
   // Updates the AWS Configuration
   updateConfiguration();
 
@@ -198,7 +224,7 @@ exports.handler = async (event, context, callback) => {
   if (event.body !== null && event.body !== undefined) {
     
     // Fetches event body from the request body
-    const info = event.body;
+    const info = JSON.parse(event.body);
 
     // Switch case based on the action to be performed
     switch(info.action){
