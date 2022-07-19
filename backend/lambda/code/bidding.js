@@ -58,7 +58,7 @@ const getBids = async (table, data) => {
             user_id: data?.user_id
         }
       }
-      const response = await dynamodbClient.get(params).promise();
+      const response = await dynamodbClient.scan(params).promise();
       console.info("Successfully retrieved user specific bid information.", response);
       return {
         message: "Successfully retrieved user specific bid information.",

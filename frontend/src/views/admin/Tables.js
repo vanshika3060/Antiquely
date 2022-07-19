@@ -2,17 +2,17 @@ import React from "react";
 
 // components
 
-import CardTable from "components/Cards/CardTable.js";
+import BuyAntiquesTable from "components/Cards/BuyAntiquesTable.js";
 
 export default function Tables() {
   return (
     <>
       <div className="flex flex-wrap mt-4">
         <div className="w-full mb-12 px-4">
-          <CardTable />
+          <BuyAntiquesTable />
         </div>
         <div className="w-full mb-12 px-4">
-          <CardTable color="dark" />
+          <BuyAntiquesTable color="dark" />
         </div>
       </div>
     </>
