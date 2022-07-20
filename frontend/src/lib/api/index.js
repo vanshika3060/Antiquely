@@ -75,6 +75,14 @@ const uploadFileToS3 = (info) => {
     });
 }
 
+const createBids = (info) => {
+    return post(BIDS_ROUTE, {
+        ...BIDS_DEFAULT_DATA,
+        "action": "CREATE_NEW_BID",
+        "data": info.data
+    });
+};
+
 export const api = {
     getAllProducts,
     createProducts,
@@ -82,5 +90,6 @@ export const api = {
     getUserSpecificProducts,
     getProductById,
     generatePreSignedURLProducts,
-    uploadFileToS3
+    uploadFileToS3,
+    createBids
 };

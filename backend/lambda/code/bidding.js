@@ -77,6 +77,40 @@ const getBids = async (table, data) => {
 
 /**
  * @author Bharatwaaj Shankaranarayanan
+ * @description Gets user & product specific bid information from the database
+ * @param {String} table 
+ * @param {*} data 
+ * @returns {Bid} 
+ */
+ const getUserProductSpecificBids = async (table, user_id, product_id) => {
+    try {
+      let params = {
+        TableName: table,
+        FilterExpression: `user_id = :userId AND product_id = :productId`,
+        ExpressionAttributeValues: {
+          ":userId": user_id,
+          ":productId": product_id
+        }
+      }
+      const response = await dynamodbClient.scan(params).promise();
+      console.info("Successfully retrieved user specific bid information.", response);
+      return {
+        message: "Successfully retrieved user specific bid information.",
+        success: true,
+        data: response
+      };
+    } catch (err) {
+      console.error("Unable to retrieve user specific bid information.", err);
+      return {
+        message: "Unable to retrieve user specific bid information.",
+        success: false,
+        error: err
+      };
+    }
+  }
+
+/**
+ * @author Bharatwaaj Shankaranarayanan
  * @description Creates bid information into the database
  * @param {String} table 
  * @param {*} data 
@@ -84,6 +118,18 @@ const getBids = async (table, data) => {
  */
 const createBids = async (table, data) => {
   try {
+    const bids = await getUserProductSpecificBids(table, data.user_id, data.product_id);
+    
+    if(bids.Items && bids.Items.length > 0){
+      const response = await updateBids(table, bids.Items[0].bid_id, {bid_amount: data.bid_amount});    
+      console.info("Successfully updated the user's bid.", response);
+      return {
+        message: "Successfully updated the user's bid.",
+        success: true,
+        data: response
+      };
+    }
+    
     const params = {
       TableName: table,
       Item: {
@@ -91,7 +137,8 @@ const createBids = async (table, data) => {
         user_id: data.user_id,
         bid_amount: data.bid_amount,
         bid_at: new Date().toString(),
-        product_id: data.product_id
+        product_id: data.product_id,
+        bid_status: "Awaiting Results"
       },
     };
     const response = await dynamodbClient.put(params).promise();
@@ -265,7 +312,7 @@ exports.handler = async (event, context, callback) => {
   if (event.body !== null && event.body !== undefined) {
     
     // Fetches event body from the request body
-    const info = event.body;
+    const info = JSON.parse(event.body);
 
     // Switch case based on the action to be performed
     switch(info.action){

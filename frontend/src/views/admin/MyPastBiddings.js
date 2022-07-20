@@ -7,7 +7,7 @@ import { api } from "lib/api";
 
 export default function MyPastBiddings() {
   const [bids, setBids] = useState([]);
-  const user_id = "479b2a37-d772-4d3c-aa33-04edaf12528s"; // TODO: Fetch from context;
+  const user_id = "1"; // TODO: Fetch from context;
 
   useEffect(() => {
     (async () => {
