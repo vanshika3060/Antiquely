@@ -2,10 +2,12 @@
 const AWS = require("aws-sdk");
 const dynamodbClient = new AWS.DynamoDB.DocumentClient();
 const s3 = new AWS.S3({ signatureVersion: "v4" });
+const lambda = new AWS.Lambda();
 
 // Constants definition
 const PRODUCTS_BUCKET = "csci5409-products";
 const IMAGES_DIRECTORY = "images";
+const DECIDER_ARN = "arn:aws:lambda:us-east-1:103757046369:function:decider";
 
 /**
  * @author Bharatwaaj Shankaranarayanan
@@ -110,10 +112,11 @@ const getUserSpecificProducts = async (table, data) =>  {
  */
 const createProduct = async (table, data) => {
   try {
+    const product_id = AWS.util.uuid.v4();
     const params = {
       TableName: table,
       Item: {
-        product_id: AWS.util.uuid.v4(),
+        product_id: product_id,
         product_name: data.product_name,
         product_minimum_bid_amount: data.product_minimum_bid_amount,
         product_image_url: data.product_image_url,
@@ -125,6 +128,7 @@ const createProduct = async (table, data) => {
       ReturnValues: "ALL_OLD"
     };
     const response = await dynamodbClient.put(params).promise();
+    const createEventResponse = await createCloudWatchEvent(product_id, new Date(data.product_auction_end_date_time).getTime(), "{\"product_id\":\""+product_id+"\"}");
     console.info("Successfully created a new product.", response);
     return {
       message: "Successfully created a new product.",
@@ -271,6 +275,118 @@ const updateConfiguration = () => {
     region: "us-east-1",
   });
 };
+
+/**
+ * @author Bharatwaaj Shankaranarayanan
+ * @description Converts date to cron expression
+ * @param {*} param_date
+ * @param {*} input 
+ * @returns 
+ */
+const dateToCronExp = async (param_date) => {
+    const date = new Date(param_date);
+    const year = date.getFullYear();
+    const minutes = date.getMinutes();
+    const hours = date.getHours();
+    const days = date.getDate();
+    const months = date.getMonth() + 1;
+    const dayOfWeek = date.getDay();
+    const cronExpression = `cron(${minutes} ${hours} ${days} ${months} ? ${year})`;
+    console.log("cron exp -> " + cronExpression);
+    return cronExpression;
+};
+
+/**
+ * @author Bharatwaaj Shankaranarayanan
+ * @description Create an event
+ * @param {*} cloudwatchevents
+ * @param {*} params
+ * @returns 
+ */
+async function createEvent(cloudwatchevents, params) {
+    return new Promise((resolve, reject) => {
+        cloudwatchevents.putRule(params, function(err, data) {
+            if (err) {
+                reject(err);
+            }
+            else {
+                resolve(data);
+            }
+        });
+    });
+}
+
+/**
+ * @author Bharatwaaj Shankaranarayanan
+ * @description Attach Permission to the cloud watch event
+ * @param {*} eventName
+ * @param {*} source
+ * @returns 
+ */
+async function attachPermission(eventName, source) {
+    const params = {
+        Action: "lambda:InvokeFunction", 
+        FunctionName: DECIDER_ARN,
+        Principal: "events.amazonaws.com",
+        SourceArn: source, 
+        StatementId: eventName + AWS.util.uuid.v4()
+    };
+    return new Promise((resolve, reject) => {
+        lambda.addPermission(params, function(err, data) {
+           if (err) reject(err, err.stack); // an error occurred
+           else     resolve(data);           // successful response
+        });
+    });
+}
+
+/**
+ * @author Bharatwaaj Shankaranarayanan
+ * @description Attach Target to the cloud watch event
+ * @param {*} eventName
+ * @param {*} cloudwatchevents
+ * @param {*} input 
+ * @returns 
+ */
+const attachTarget = (eventName, cloudwatchevents, input) => {
+    const params = {
+        Rule: eventName, /* Name of your event */
+        Targets: [ 
+            {
+                Arn: DECIDER_ARN,
+                Id: AWS.util.uuid.v4(), // Generate a Random String
+                Input: input
+            }
+        ]
+    }
+    return new Promise((resolve, reject) => {
+        cloudwatchevents.putTargets(params, function(err, data) {
+          if (err) reject(err) // an error occurred
+          else resolve(data)         // successful response
+        });
+    })
+}
+
+/**
+ * @author Bharatwaaj Shankaranarayanan
+ * @description Create cloud watch event
+ * @param {*} eventName
+ * @param {*} date
+ * @param {*} input 
+ * @returns 
+ */
+const createCloudWatchEvent = async (eventName, date, input) => {
+    const cloudwatchevents = new AWS.CloudWatchEvents();
+    const currentTime = new Date(date).getTime(); // UTC Time
+    const scheduleExpression = await dateToCronExp(currentTime);
+    const params = {
+        Name: eventName,
+        ScheduleExpression: scheduleExpression
+    };
+    const createdEvent = await createEvent(cloudwatchevents, params);
+    const targetResponse = await attachTarget(eventName, cloudwatchevents, input);
+    const lambdaPermission = await attachPermission(eventName, targetResponse.RuleArn);
+    
+}
 
 /**
  * @author Bharatwaaj Shankaranarayanan
