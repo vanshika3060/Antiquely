@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import Alert from "./Alert";
 
-const Modal = ({setShowModal, message, title}) => {
+const BidModal = ({setShowModal, title, submitBid, minBidAmount}) => {
+
+    const [bidAmount, setBidAmount] = useState(150);
+    
     return (<>
         <div
           className="items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none" style={{marginLeft: "20%", marginRight: "20%"}}
@@ -24,9 +28,16 @@ const Modal = ({setShowModal, message, title}) => {
               </div>
               {/*body*/}
               <div className="relative p-6 flex-auto" style={{padding: 20}}>
+                {(parseInt(bidAmount) < parseInt(minBidAmount)) || bidAmount == null || bidAmount == undefined || bidAmount == ""  ? <Alert message={"Your bid amount must be greater than the minimum bid amount " + minBidAmount}/> : ""}
                 <p className="my-4 text-blueGray-500 text-lg leading-relaxed">
-                  {message}
+                  {"What is the amount that you wish to bid this item for ?"}
                 </p>
+                <input
+                    type="number"
+                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    defaultValue="150"
+                    onChange={(e) => setBidAmount(e.target.value)}
+                  />
               </div>
               {/*footer*/}
               <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b" style={{padding:10}}>
@@ -38,11 +49,11 @@ const Modal = ({setShowModal, message, title}) => {
                   Close
                 </button>
                 <button
-                  className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                  className={(parseInt(bidAmount) < parseInt(minBidAmount)) || bidAmount == null || bidAmount == undefined || bidAmount == ""  ? "bg-blueGray-200 text-white text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150" :"bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"}
                   type="button"
-                  onClick={() => setShowModal(false)}
+                  onClick={() => submitBid(bidAmount)}
                 >
-                  OK
+                  Bid
                 </button>
               </div>
             </div>
@@ -52,4 +63,4 @@ const Modal = ({setShowModal, message, title}) => {
       </>)
 }
 
-export default Modal;
+export default BidModal;
