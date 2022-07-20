@@ -119,9 +119,8 @@ const getBids = async (table, data) => {
 const createBids = async (table, data) => {
   try {
     const bids = await getUserProductSpecificBids(table, data.user_id, data.product_id);
-    
-    if(bids.Items && bids.Items.length > 0){
-      const response = await updateBids(table, bids.Items[0].bid_id, {bid_amount: data.bid_amount});    
+    if(bids.data.Items && bids.data.Items.length > 0){
+      const response = await updateBids(table, bids.data.Items[0].bid_id, {bid_amount: data.bid_amount});    
       console.info("Successfully updated the user's bid.", response);
       return {
         message: "Successfully updated the user's bid.",
