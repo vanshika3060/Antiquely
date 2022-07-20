@@ -109,7 +109,7 @@ export default function PastBiddingsTable({ title, color, bids }) {
                   {bid.bid_amount}
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <i className={bid.bid_status == "won"?"fas fa-circle text-emerald-500 mr-2": "fas fa-circle text-red-500 mr-2"}></i> {bid.bid_status == "won"?"Won Bid": "Lost Bid"}
+                  <i className={bid.bid_status == "won"?"fas fa-circle text-emerald-500 mr-2": bid.bid_status == "lost"?"fas fa-circle text-red-500 mr-2": "fas fa-circle text-orange-500 mr-2"}></i> {bid.bid_status == "won"?"Won Bid": bid.bid_status == "lost"? "Lost Bid": "Awaiting Results"}
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                   <TableDropdown />

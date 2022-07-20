@@ -4,10 +4,48 @@ import PropTypes from "prop-types";
 // components
 
 import TableDropdown from "components/Dropdowns/TableDropdown.js";
+import BidModal from "components/Others/BidModal";
+import { api } from "lib/api";
 
 export default function BuyAntiquesTable({ title, color, products }) {
+
+  const [showModal, setShowModal] = React.useState(false);
+  const [selectedProduct, setSelectedProduct] = React.useState("");
+  const [minBidAmount, setMinBidAmount] = React.useState(0);
+
+  const bidItem = async (product_id, product_minimum_bid_amount) => {
+    setSelectedProduct(product_id);
+    setShowModal(true);
+    setMinBidAmount(product_minimum_bid_amount);
+  }
+
+  const submitBid = async (bidAmount) => {
+    try{
+      const response = await api.createBids({
+        data: {
+          user_id: 1, //TODO: get user id
+          bid_amount:  bidAmount,
+          product_id: selectedProduct
+        }
+      });
+      console.log("response", response);
+    } catch (err){
+      console.log("BIDDING FAILED:", err);
+    }
+    setShowModal(false);
+  }
+  
   return (
     <>
+      {showModal && (
+          <BidModal
+            style={{ margin: "auto", width: "100%", textAlign: "center" }}
+            title="Bid Item"
+            minBidAmount={minBidAmount}
+            setShowModal={setShowModal}
+            submitBid={submitBid}
+          />
+        )}
       <div
         className={
           "relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded " +
@@ -202,12 +240,13 @@ export default function BuyAntiquesTable({ title, color, products }) {
                         <button
                           className="bg-lightBlue-500 text-white active:bg-lightBlue-600 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
                           type="button"
+                          onClick={() => bidItem(product.product_id, product.product_minimum_bid_amount)}
                         >
                           BID
                         </button>
                       ) : product.product_status === "scheduled" ? (
                         <button
-                          className="bg-lightBlue-500 text-white text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
+                          className="bg-blueGray-200 text-white text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
                           type="button"
                           disabled
                         >
