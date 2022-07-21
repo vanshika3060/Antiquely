@@ -1,11 +1,13 @@
-
 import UserPool from "./UserPool";
 import React, { useState, useEffect } from "react";
-
 import { Link } from "react-router-dom";
+const { default: axios } = require('axios')
+
+
 
 
 export default function Register() {
+
 
   const [firstname, setFirstName] = useState('');
   const [lastname, setLastName] = useState('');
@@ -19,9 +21,9 @@ export default function Register() {
   const [errorConfirmPassword, setErrorConfirmPassword] = useState('');
   var uuid = require('uuid');
 
-  const onSubmit = (event) =>
-  {
-    
+
+  const onSubmit = (event) => {
+
     event.preventDefault();
     UserPool.signUp(email,password, [], null, (err, data) =>
     {
@@ -31,10 +33,6 @@ export default function Register() {
       }
       console.log(data);
     });
-   
-  };
-
-  const handleCreate = () => {
     try {
       const user_id = uuid.v4();
       axios({
@@ -63,6 +61,8 @@ export default function Register() {
       console.log(err)
     }
   }
+
+
 
   const handleChange = (event) => {
     // console.log(event.target)
@@ -265,7 +265,7 @@ export default function Register() {
                     <button
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                       type="button"
-                      onClick={handleCreate}
+                      onClick={onSubmit}
                     >
                       Create Account
                     </button>

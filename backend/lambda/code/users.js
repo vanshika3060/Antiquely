@@ -2,10 +2,10 @@
 const AWS = require("aws-sdk");
 const dynamodbClient = new AWS.DynamoDB.DocumentClient();
 
-const getUser = async (users, data) => {
+const getUser = async (table, data) => {
   try {
     let params = {
-      TableName: users
+      TableName: table
     }
     let response = null;
     if(data?.user_id){
@@ -36,15 +36,13 @@ const getUser = async (users, data) => {
   }
 }
 
-const createUser = async (users, data) => {
+const createUser = async (table, data) => {
   try {
     const params = {
-      TableName: users,
+      TableName: table,
       Item: {
-        user_id: AWS.util.uuid.v4(),
-        user_name: data.user_name,
-        user_description: data.user.user_description
-       
+        user_id: data.user_id,
+        email_id: data.email_id
       },
     };
     const response = await dynamodbClient.put(params).promise();
@@ -79,11 +77,11 @@ const generateUpdateQuery = (fields) => {
     return exp
 }
 
-const updateUser = async (users, user_id, data) => {
+const updateUser = async (table, user_id, data) => {
   try {
     const expression = generateUpdateQuery(data);
     const params = {
-      TableName: users,
+      TableName: table,
       Key: {
         user_id: user_id,
       },
@@ -108,10 +106,10 @@ const updateUser = async (users, user_id, data) => {
 };
 
 
-const deleteUser = async (users, data) => {
+const deleteUser = async (table, data) => {
   try {
     let params = {
-      TableName: users,
+      TableName: table,
       Key: {
             "user_id": data.user_id
       }
