@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import UserPool from "./UserPool";
 import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
-import { toast } from 'material-react-toastify';
-import 'material-react-toastify/dist/ReactToastify.css';
 
 export default function Login() {
 
@@ -28,7 +26,6 @@ export default function Login() {
       onSuccess: (data) =>
       {
         console.log("on Success: ",data);
-        toast.success("Checkout successful!");
       },
       onFailure: (err) =>
       {

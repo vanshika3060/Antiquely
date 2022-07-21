@@ -1,6 +1,9 @@
+
 import UserPool from "./UserPool";
 import React, { useState, useEffect } from "react";
-const { default: axios } = require('axios')
+
+import { Link } from "react-router-dom";
+
 
 export default function Register() {
 
