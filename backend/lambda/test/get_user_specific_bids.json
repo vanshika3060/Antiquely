@@ -1,0 +1,13 @@
+{
+    "type": "TOKEN",
+    "authorizationToken": "incoming-client-token",
+    "methodArn": "arn:aws:execute-api:us-east-1:123456789012:example/prod/POST/{proxy+}",
+    "body": {
+      "table": "bids",
+      "action": "GET_USER_SPECIFIC_BID",
+      "data": {
+        "user_id": "479b2a37-d472-4d3c-aa33-05edaf11528f"
+      }
+    }
+  }
+  

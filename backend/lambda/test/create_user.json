@@ -1,0 +1,13 @@
+{
+    "type": "TOKEN",
+    "authorizationToken": "incoming-client-token",
+    "methodArn": "arn:aws:execute-api:us-east-1:123456789012:example/prod/POST/{proxy+}",
+    "body": {
+      "table": "users",
+      "action": "CREATE_NEW_USER",
+      "data": {
+        "user_id": "45",
+        "user_name": "Vanshika"
+      }
+    }
+}
