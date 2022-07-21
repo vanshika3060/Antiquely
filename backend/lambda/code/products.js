@@ -1,6 +1,11 @@
 // Imports for the lambda function
 const AWS = require("aws-sdk");
 const dynamodbClient = new AWS.DynamoDB.DocumentClient();
+const s3 = new AWS.S3({ signatureVersion: "v4" });
+
+// Constants definition
+const PRODUCTS_BUCKET = "csci5409-products";
+const IMAGES_DIRECTORY = "images";
 
 /**
  * @author Bharatwaaj Shankaranarayanan
@@ -46,9 +51,9 @@ const getProduct = async (table, data) => {
 /**
  * @author Bharatwaaj Shankaranarayanan
  * @description Gets product status from the database
- * @param {String} table 
- * @param {*} data 
- * @returns {Product} 
+ * @param {start} date 
+ * @param {end} date 
+ * @returns {Status} 
  */
 const getProductStatus = (start, end) => {
   const current_date = new Date();
@@ -61,6 +66,38 @@ const getProductStatus = (start, end) => {
     return "on_sale";
   } else if (current_date >= end_date){
     return "completed";
+  }
+}
+
+/**
+ * @author Bharatwaaj Shankaranarayanan
+ * @description Gets user specific products from the database
+ * @param {String} table
+ * @param {*} data 
+ * @returns {Products}
+ */
+const getUserSpecificProducts = async (table, data) =>  {
+  try {
+    let params = {
+      TableName: table,
+      Key: {
+          user_id: data?.user_id
+      }
+    }
+    const response = await dynamodbClient.scan(params).promise();
+    console.info("Successfully retrieved user specific product information.", response);
+    return {
+      message: "Successfully retrieved user specific product information.",
+      success: true,
+      data: response
+    };
+  } catch (err) {
+    console.error("Unable to retrieve user specific product information.", err);
+    return {
+      message: "Unable to retrieve user specific product information.",
+      success: false,
+      error: err
+    };
   }
 }
 
@@ -195,6 +232,37 @@ const deleteProduct = async (table, data) => {
 
 /**
  * @author Bharatwaaj Shankaranarayanan
+ * @description Generates Pre Signed URL for data upload
+ * @param {*} data 
+ * @returns {String} url
+ */
+const generatePreSignedURL = async (data) => {
+  try {
+    const params = {
+        Bucket: PRODUCTS_BUCKET,
+        Key: IMAGES_DIRECTORY + "/" + data.product_image_file_name,
+        ContentType: "multipart/form-data",
+        Expires: 120
+    };
+    
+    const response = await s3.getSignedUrl("putObject", params)
+    return {
+      message: "Successfully deleted the product information.",
+      success: true,
+      data: response
+    };
+  } catch (err) {
+    console.error("Unable to delete the product information.", err);
+    return {
+      message: "Unable to delete the product information.",
+      success: false,
+      error: err
+    };
+  }
+}
+
+/**
+ * @author Bharatwaaj Shankaranarayanan
  * @description Updates Configuration
  * @returns null
  */
@@ -234,12 +302,18 @@ exports.handler = async (event, context, callback) => {
       case "GET_SPECIFIC_PRODUCT":
         console.info("GET_SPECIFIC_PRODUCT called.")
         return getProduct(info.table, info.data);
+      case "GET_USER_SPECIFIC_PRODUCT":
+        console.info("GET_USER_SPECIFIC_PRODUCT called.")
+        return getUserSpecificProducts(info.table, info.data);
       case "CREATE_NEW_PRODUCT":
         console.info("CREATE_NEW_PRODUCT called.")
         return createProduct(info.table, info.data);
       case "UPDATE_EXISTING_PRODUCT":
         console.info("UPDATE_EXISTING_PRODUCT called.")
         return updateProduct(info.table, info.data?.product_id, info.data?.update_data);
+      case "GEN_PRE_SIGNED_URL_PRODUCT_IMG_UPLOAD":
+        console.info("UPDATE_EXISTING_PRODUCT called.")
+        return generatePreSignedURL(info.data);
       case "DELETE_A_PRODUCT":
         console.info("DELETE_A_PRODUCT called.")
         return deleteProduct(info.table, info.data)
