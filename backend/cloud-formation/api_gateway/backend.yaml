@@ -1,0 +1,44 @@
+openapi: "3.0.1"
+info:
+  title: "Antiquely Backend"
+  version: "2022-07-13 23:27:00UTC"
+servers:
+- url: "https://4o2g1poz9d.execute-api.us-east-1.amazonaws.com/{basePath}"
+  variables:
+    basePath:
+      default: "api"
+paths:
+  /bid/handler:
+    x-amazon-apigateway-any-method:
+      responses:
+        default:
+          description: "Default response for ANY /bid/handler"
+      x-amazon-apigateway-integration:
+        payloadFormatVersion: "2.0"
+        type: "aws_proxy"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:103757046369:function:bid/invocations"
+        connectionType: "INTERNET"
+  /product/handler:
+    x-amazon-apigateway-any-method:
+      responses:
+        default:
+          description: "Default response for ANY /product/handler"
+      x-amazon-apigateway-integration:
+        payloadFormatVersion: "2.0"
+        type: "aws_proxy"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:103757046369:function:product/invocations"
+        connectionType: "INTERNET"
+x-amazon-apigateway-cors:
+  allowMethods:
+  - "*"
+  allowHeaders:
+  - "*"
+  exposeHeaders:
+  - "date, x-api-id"
+  maxAge: 300
+  allowCredentials: false
+  allowOrigins:
+  - "*"
+x-amazon-apigateway-importexport-version: "1.0"

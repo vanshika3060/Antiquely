@@ -1,0 +1,253 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: An AWS Serverless Lambda Function for handling all the product API endpoints.
+
+Parameters:
+  AntiquelySNSTopicName:
+    Type: String
+    Default: 'AntiquelySNS'
+    Description: Antiquely SNS Topic Name
+  AntiquelySNSDisplayName:
+    Type: String
+    Default: 'Bid Winner'
+    Description: Antiquely SNS Display Name
+  AntiquelyLabRole:
+    Type: String
+    Default: 'arn:aws:iam::103757046369:role/LabRole' # Change Lab Role
+    Description: Default Lab Role used to create resources
+  S3TemplateBucketName:
+    Type: String
+    Default: antiquely-templates-users # Change S3 Bucket name
+    Description: Default templates residing bucket parameter
+  UsersPartitionKeyName:
+    Type: String
+    Default: user_id
+    Description: Hash Key Name
+  UsersPartitionKeyType:
+    Type: String
+    Default: S
+    Description: Hash Key Type
+  ProductsPartitionKeyName:
+    Type: String
+    Default: product_id
+    Description: Hash Key Name
+  ProductsPartitionKeyType:
+    Type: String
+    Default: S
+    Description: Hash Key Type
+  BidsPartitionKeyName:
+    Type: String
+    Default: bid_id
+    Description: Hash Key Name
+  BidsPartitionKeyType:
+    Type: String
+    Default: S
+    Description: Hash Key Type
+
+Resources:
+
+  AntiquelySNS:
+    Type: 'AWS::SNS::Topic'
+    Properties:
+      TopicName: !Ref AntiquelySNSTopicName
+      DisplayName: !Ref AntiquelySNSDisplayName
+
+  # Ar
+  # AntiquelyCognito:
+  #   Type: AWS::Cognito::UserPool
+  #   Properties: 
+  #     AdminCreateUserConfig: 
+  #       False
+  #     EmailVerificationMessage: "Please verify your e-mail address"
+  #     EmailVerificationSubject: "Antiquely e-mail Verification"
+  #     UserPoolName: "Antiquely"
+
+  # AntiquelyAPIGateway:
+  #   Type: AWS::Serverless::Api
+  #   Properties:
+  #     Name: Antiquely AWS Api Gateway
+  #     StageName: api
+  #     DefinitionUri:
+  #       Bucket: !Ref S3TemplateBucketName
+  #       Key: api_gateway/backend.yaml
+
+  # AntiquelyAPIGateway:
+  #   Type: AWS::Serverless::Api
+  #   Properties:
+  #     Name: Antiquely AWS Api Gateway
+  #     StageName: api
+  #     DefinitionUri:
+  #       Bucket: !Ref S3TemplateBucketName
+  #       Key: api_gateway/users.yaml
+
+  #This call is for creating a lambda function for products
+  product:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: "products"
+      Handler: products.handler
+      Runtime: nodejs16.x
+      CodeUri: 
+        Bucket: !Ref S3TemplateBucketName
+        Key: lambda/products.js.zip
+      Description: ''
+      MemorySize: 128
+      Timeout: 3
+      Role: !Ref AntiquelyLabRole
+      Environment:
+        Variables: 
+          DeciderArn: !GetAtt decider.Arn
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /product/handler
+            Method: ANY
+
+  # This call is for creating a lambda function for users
+  user:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: "users"
+      Handler: users.js.handler
+      Runtime: nodejs16.x
+      CodeUri: 
+        Bucket: !Ref S3TemplateBucketName
+        Key: lambda/users.zip
+      Description: ''
+      MemorySize: 128
+      Timeout: 3
+      Role: !Ref AntiquelyLabRole
+
+  # This call is for creating a lambda function for bidding
+  bidding:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: "bidding"
+      Handler: bidding.handler
+      Runtime: nodejs16.x
+      CodeUri: 
+        Bucket: !Ref S3TemplateBucketName
+        Key: lambda/bidding.js.zip
+      Description: ''
+      MemorySize: 128
+      Timeout: 3
+      Role: !Ref AntiquelyLabRole
+      Events:
+        Api1:
+          Type: Api
+          # RestApiId:
+              # Ref: AntiquelyAPIGatewayBidHandler
+          Properties:
+            Path: /bid/handler
+            Method: ANY
+
+  # This call is for creating a lambda function for decider
+  decider:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: "decider"
+      Handler: decider.js.handler
+      Runtime: nodejs16.x
+      CodeUri: 
+        Bucket: !Ref S3TemplateBucketName
+        Key: lambda/decider.zip
+      Description: ''
+      MemorySize: 128
+      Timeout: 3
+      Role: !Ref AntiquelyLabRole
+
+  # This call is for creating a lambda function for uploading images
+  upload:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: "upload"
+      Handler: upload.handler
+      Runtime: nodejs16.x
+      CodeUri: 
+        Bucket: !Ref S3TemplateBucketName
+        Key: lambda/upload.js.zip
+      Description: ''
+      MemorySize: 128
+      Timeout: 3
+      Role: !Ref AntiquelyLabRole
+
+
+  # This call is for creating a lambda function for sending emails using SNS
+  sendEmail:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: "send_email"
+      Handler: send_email.handler
+      Runtime: nodejs16.x
+      CodeUri: 
+        Bucket: !Ref S3TemplateBucketName
+        Key: lambda/send_email.zip
+      Description: ''
+      MemorySize: 128
+      Timeout: 3
+      Role: !Ref AntiquelyLabRole
+      Environment:
+        Variables: 
+          SnsArn: !GetAtt AntiquelySNS.Arn
+
+  # Create the dynamo db table
+  UsersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: user
+      AttributeDefinitions:
+        - 
+          AttributeName: !Ref UsersPartitionKeyName
+          AttributeType: !Ref UsersPartitionKeyType
+      KeySchema:
+        - 
+          AttributeName: !Ref UsersPartitionKeyName
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5 
+  
+  # Create the dynamo db table
+  ProductsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: user
+      AttributeDefinitions:
+        - 
+          AttributeName: !Ref ProductsPartitionKeyName
+          AttributeType: !Ref ProductsPartitionKeyType
+      KeySchema:
+        - 
+          AttributeName: !Ref ProductsPartitionKeyName
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5 
+  
+  # Create the dynamo db table
+  BidsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: user
+      AttributeDefinitions:
+        - 
+          AttributeName: !Ref BidsPartitionKeyName
+          AttributeType: !Ref BidsPartitionKeyType
+      KeySchema:
+        - 
+          AttributeName: !Ref BidsPartitionKeyName
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5 
+
+Outputs:
+  AntiquelyAPIGatewayProductHandler:
+    Description: API Gateway endpoint URL for api stage for Antiquely Backend
+    Value:
+      Fn::Sub: https://${AntiquelyAPIGateway}.execute-api.us-east-1.amazonaws.com/api/product/
+  AntiquelyAPIGatewayBidHandler:
+    Description: API Gateway endpoint URL for api stage for Antiquely Backend
+    Value:
+      Fn::Sub: https://${AntiquelyAPIGateway}.execute-api.us-east-1.amazonaws.com/api/bid/
