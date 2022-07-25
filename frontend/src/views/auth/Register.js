@@ -36,7 +36,7 @@ export default function Register() {
     try {
       const user_id = uuid.v4();
       axios({
-        url: 'https://ke0q79ybf5.execute-api.us-east-1.amazonaws.com/userOperations',
+        url: process.env.REACT_APP_USERS_API_URL || "https://ke0q79ybf5.execute-api.us-east-1.amazonaws.com/userOperations",
         method: 'POST',
         data: {
           

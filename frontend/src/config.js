@@ -9,17 +9,15 @@ const staging =
 
 export const webUrl = (() => {
   if (staging) {
-    // TODO: Yet to be updated
-    return "https://4o2g1poz9d.execute-api.us-east-1.amazonaws.com";
+    return process.env.REACT_APP_BACKEND_API_URL || "https://4o2g1poz9d.execute-api.us-east-1.amazonaws.com";
   }
 
   if (dev) {
-    return "https://4o2g1poz9d.execute-api.us-east-1.amazonaws.com";
+    return process.env.REACT_APP_BACKEND_API_URL || "https://4o2g1poz9d.execute-api.us-east-1.amazonaws.com";
   }
 
   if (prod) {
-    // TODO: Yet to be updated
-    return "https://4o2g1poz9d.execute-api.us-east-1.amazonaws.com";
+    return process.env.REACT_APP_BACKEND_API_URL || "https://4o2g1poz9d.execute-api.us-east-1.amazonaws.com";
   }
 })();
 

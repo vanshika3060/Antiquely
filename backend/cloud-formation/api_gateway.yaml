@@ -1,0 +1,16 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: An AWS Serverless Lambda Function for handling all the product API endpoints.
+Resources:
+  AntiquelyAPIGateway:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      Name: Antiquely AWS Api Gateway
+      # Cors: 
+      #   AllowHeaders: "*"
+      #   AllowMethods: "*"
+      #   AllowOrigin: "*"
+      StageName: api
+      DefinitionUri:
+        Bucket: antiquely-templates-bharat
+        Key: api_gateway/antiquely_api_gateway_open_api_specs.yaml
