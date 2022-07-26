@@ -1,0 +1,15 @@
+{
+    "Parameters": {
+      "AntiquelyLabRole": "arn:aws:iam::103757046369:role/LabRole",
+      "S3TemplateBucketName": "antiquely-templates-production",
+      "S3ProductsImageBucketName": "antiquely-product-images",
+      "AntiquelySNSTopicName": "AntiquelySNSProd",
+      "LambdaDeciderFunctionName": "decider-prod",
+      "LambdaProductsFunctionName": "products-prod",
+      "LambdaBiddingFunctionName": "bids-prod",
+      "LambdaUsersFunctionName": "users-prod",
+      "LambdaSendEmailFunctionName": "email-prod",
+      "AntiquelyFrontendAppName": "AntiquelyFI",
+      "CognitoDomain" : "AntiquelyCognito"
+    }
+}

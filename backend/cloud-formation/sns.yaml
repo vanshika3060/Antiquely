@@ -1,93 +1,36 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Transform: 'AWS::Serverless-2016-10-31'
-Description: An AWS Serverless Lambda Function for handling all the product API endpoints.
-
 Parameters:
-  AntiquelySNSTopicName:
-    Type: String
-    Default: 'AntiquelySNS'
-    Description: Antiquely SNS Topic Name
-  AntiquelySNSDisplayName:
-    Type: String
-    Default: 'Bid Winner'
-    Description: Antiquely SNS Display Name
-  AntiquelyLabRole:
-    Type: String
-    Default: 'arn:aws:iam::103757046369:role/LabRole' # Change Lab Role
-    Description: Default Lab Role used to create resources
-  S3TemplateBucketName:
-    Type: String
-    Default: antiquely-templates-bharat # Change S3 Bucket name
-    Description: Default templates residing bucket parameter
-  UsersPartitionKeyName:
-    Type: String
-    Default: user_id
-    Description: Hash Key Name
-  UsersPartitionKeyType:
-    Type: String
-    Default: S
-    Description: Hash Key Type
-  ProductsPartitionKeyName:
-    Type: String
-    Default: product_id
-    Description: Hash Key Name
-  ProductsPartitionKeyType:
-    Type: String
-    Default: S
-    Description: Hash Key Type
-  BidsPartitionKeyName:
-    Type: String
-    Default: bid_id
-    Description: Hash Key Name
-  BidsPartitionKeyType:
-    Type: String
-    Default: S
-    Description: Hash Key Type
 
+  S3ProductsImageBucketName:
+    Type: String
+    Default: antiquely-production-images2
+    Description: Default bucket to upload code for deployment
+  
 Resources:
-  # This call is for creating a lambda function for decider
-  decider:
-    Type: 'AWS::Serverless::Function'
+  S3ProductImageBucket:
+    Type: 'AWS::S3::Bucket'
+    Description: Bucket on which we will attach and test bucket policy
     Properties:
-      FunctionName: "decider-test"
-      Handler: decider.handler
-      Runtime: nodejs16.x
-      CodeUri: 
-        Bucket: !Ref S3TemplateBucketName
-        Key: lambda/decider.js.zip
-      Description: ''
-      MemorySize: 128
-      Timeout: 3
-      Role: !Ref AntiquelyLabRole
-
-  product:
-    Type: 'AWS::Serverless::Function'
+      BucketName: !Ref S3ProductsImageBucketName
+      AccessControl: PublicRead
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+          
+  MyS3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
     Properties:
-      FunctionName: "products-test"
-      Handler: products.handler
-      Runtime: nodejs16.x
-      CodeUri: 
-        Bucket: !Ref S3TemplateBucketName
-        Key: lambda/products.js.zip
-      Description: ''
-      MemorySize: 128
-      Timeout: 3
-      Role: !Ref AntiquelyLabRole
-      Environment:
-        Variables: 
-          DeciderArn: !GetAtt decider.Arn
-      Events:
-        ApiEvent:
-          Type: HttpApi
-          Properties:
-            # EndpointConfiguration:
-              # Type: REGIONAL
-            # Cors:
-            #   AllowHeaders: "*"
-            #   AllowMethods: "*"
-            #   AllowOrigin: "*"
-            Path: /product/handler
-            Method: ANY
-
-  
-  
+      Bucket: !Ref S3ProductImageBucket
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:*
+            Effect: Allow
+            Resource:
+              - !Sub 'arn:aws:s3:::${S3ProductImageBucket}'
+              - !Sub 'arn:aws:s3:::${S3ProductImageBucket}/*'
+            Principal:
+              AWS:
+                - '*'

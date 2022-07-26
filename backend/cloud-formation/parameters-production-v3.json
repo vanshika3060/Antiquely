@@ -1,0 +1,13 @@
+[
+  "AntiquelyLabRole=arn:aws:iam::103757046369:role/LabRole",
+  "S3TemplateBucketName=antiquely-templates-production",
+  "S3ProductsImageBucketName=antiquely-production-images",
+  "AntiquelySNSTopicName=AntiquelySNSProd4",
+  "LambdaDeciderFunctionName=decider-prod4",
+  "LambdaProductsFunctionName=products-prod4",
+  "LambdaBiddingFunctionName=bids-prod4",
+  "LambdaUsersFunctionName=users-prod4",
+  "LambdaSendEmailFunctionName=email-prod4",
+  "AntiquelyFrontendAppName=AntiquelyFrontend4",
+  "CognitoDomain=antiquely1002"
+]

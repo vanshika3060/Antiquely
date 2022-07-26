@@ -8,7 +8,7 @@ import { api } from "lib/api";
 export default function MyAntiques() {
 
   const [products, setProducts] = useState([]);
-  const user_id = 1; // TODO: Fetch from context;
+  const user_id = localStorage.getItem('USER_ID') || 1;
 
   useEffect(() => {
     (async () => {

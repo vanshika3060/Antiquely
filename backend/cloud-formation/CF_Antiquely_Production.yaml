@@ -1,0 +1,478 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: "AWS::Serverless-2016-10-31"
+Description: An AWS Serverless Lambda Function for handling all the product API endpoints.
+Parameters:
+  # Section: AWS Genertic Template Parameters
+  # Author: Bharatwaaj Shankaranarayanan
+  AntiquelyLabRole:
+    Type: String
+    Default: "arn:aws:iam::103757046369:role/LabRole" # !IMPORTANT Change Lab Role if necessary
+    Description: Default Lab Role used to create resources
+  S3TemplateBucketName:
+    Type: String
+    Default: antiquely-templates-users # !IMPORTANT Change depending on bucket where the data is stored
+    Description: Default templates residing bucket parameter
+
+  # Section: AWS Product Image Bucket Name
+  # Author: Bharatwaaj Shankaranarayanan
+  S3ProductsImageBucketName:
+    Type: String
+    Default: antiquely-product-images # !IMPORTANT Change at runtime
+    Description: AWS Product Image Bucket Name
+
+  # Section: AWS SNS Parameters
+  # Author: Bharatwaaj Shankaranarayanan
+  AntiquelySNSTopicName:
+    Type: String
+    Default: "AntiquelySNS" # !IMPORTANT Change at runtime
+    Description: Antiquely SNS Topic Name
+  AntiquelySNSDisplayName:
+    Type: String
+    Default: "Bid Winner"
+    Description: Antiquely SNS Display Name
+
+  # Section: Dynamo DB Parameters
+  # Table: Users
+  # Author: Vanshika Gohel
+  UsersTableName:
+    Type: String
+    Default: users # !IMPORTANT Change at runtime
+    Description: Users Table Name
+  UsersPartitionKeyName:
+    Type: String
+    Default: user_id
+    Description: Users Key Name
+  UsersPartitionKeyType:
+    Type: String
+    Default: S
+    Description: Users Key Type
+
+  # Section: Dynamo DB Parameters
+  # Table: Products
+  # Author: Bharatwaaj Shankaranaraynan
+  ProductsTableName:
+    Type: String
+    Default: products # !IMPORTANT Change at runtime
+    Description: Products Table Name
+  ProductsPartitionKeyName:
+    Type: String
+    Default: product_id
+    Description: Products Key Name
+  ProductsPartitionKeyType:
+    Type: String
+    Default: S
+    Description: Products Key Type
+
+  # Section: Dynamo DB Parameters
+  # Table: Bids
+  # Author: Bharatwaaj Shankaranaraynan
+  BidsTableName:
+    Type: String
+    Default: bids # !IMPORTANT Change at runtime
+    Description: Bids Table Name
+  BidsPartitionKeyName:
+    Type: String
+    Default: bid_id
+    Description: Bids Key Name
+  BidsPartitionKeyType:
+    Type: String
+    Default: S
+    Description: Bids Key Type
+
+  # Section: Lambda Function Parameters
+  # Author: Bharatwaaj Shankaranaraynan
+  LambdaDeciderFunctionName:
+    Type: String
+    Default: decider # !IMPORTANT Change at runtime
+    Description: Lambda Function Name Decider
+  LambdaProductsFunctionName:
+    Type: String
+    Default: products # !IMPORTANT Change at runtime
+    Description: Lambda Function Name Products
+  LambdaBiddingFunctionName:
+    Type: String
+    Default: bidding # !IMPORTANT Change at runtime
+    Description: Lambda Function Name Bidding
+  LambdaUsersFunctionName:
+    Type: String
+    Default: users # !IMPORTANT Change at runtime
+    Description: Lambda Function Name Users
+  LambdaSendEmailFunctionName:
+    Type: String
+    Default: sendEmail # !IMPORTANT Change at runtime
+    Description: Lambda Function Name Send Email
+
+  # Section: EBS Function Parameters
+  # Author: Bharatwaaj Shankaranaraynan
+  S3KeyNameForCode:
+    Type: String
+    Default: frontend/antiquely-frontend.zip
+    Description: Default zip file name for front end code
+  AntiquelyFrontendAppName:
+    Type: String
+    Default: antiquelyfe # !IMPORTANT Change at runtime
+    Description: Default bucket to upload code for deployment
+  
+  # Section: Cognito Parameters
+  # Author: Bharatwaaj Shankaranaraynan
+  CognitoDomain:
+    Type: String
+    MinLength: 3
+    MaxLength: 63
+    AllowedPattern: ^[a-z0-9](?:[a-z0-9\-]{0,61}[a-z0-9])?$
+    Description: Enter a string. Must be alpha numeric 3-63 in length. Must be globally unique.
+    Default: 'antiquely88' # !IMPORTANT Change at runtime
+
+Resources:
+  # Name: AntiquelySNS
+  # Type: AWS SNS Notifications
+  # Description: Antiquely SNS Topic to notify users who won the bidding
+  # Author: Bharatwaaj Shankaranarayanan
+  AntiquelySNS:
+    Type: "AWS::SNS::Topic"
+    Properties:
+      TopicName: !Ref AntiquelySNSTopicName
+      DisplayName: !Ref AntiquelySNSDisplayName
+
+  # Name: AntiquelyBackendAPIGateway
+  # Type: Api Gateway - Http Api
+  # Description: Antiquely Backend API Gateway with OpenAPI Specifications for routes
+  # Author: Bharatwaaj Shankaranarayanan
+  AntiquelyBackendAPIGateway:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: api
+      DefinitionBody:
+        Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: !Sub s3://${S3TemplateBucketName}/api_gateway/backend.yaml
+
+  # Name: AntiquelyUsersAPIGateway
+  # Type: Api Gateway - Http Api
+  # Description: Antiquely Users API Gateway with OpenAPI Specifications for routes
+  # Author: Vanshika Gohel
+  AntiquelyUsersAPIGateway:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: api
+      DefinitionBody:
+        Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: !Sub s3://${S3TemplateBucketName}/api_gateway/users.yaml
+
+  # Name: decider
+  # Type: Lambda Function
+  # Description: Decider Lambda function that comprises of controllers and services which decides the winner
+  # Author: Bharatwaaj Shankaranarayanan
+  decider:
+    Type: "AWS::Serverless::Function"
+    Properties:
+      FunctionName: !Ref LambdaDeciderFunctionName
+      Handler: decider.handler
+      Runtime: nodejs16.x
+      CodeUri:
+        Bucket: !Ref S3TemplateBucketName
+        Key: lambda/decider.zip
+      Description: ""
+      MemorySize: 128
+      Timeout: 3
+      Role: !Ref AntiquelyLabRole
+
+  # Name: product
+  # Type: Lambda Function
+  # Description: Products Lambda function that comprises of controllers and services
+  # Author: Bharatwaaj Shankaranarayanan
+  product:
+    Type: "AWS::Serverless::Function"
+    Properties:
+      FunctionName: !Ref LambdaProductsFunctionName
+      Handler: products.handler
+      Runtime: nodejs16.x
+      CodeUri:
+        Bucket: !Ref S3TemplateBucketName
+        Key: lambda/products.zip
+      Description: ""
+      MemorySize: 128
+      Timeout: 3
+      Role: !Ref AntiquelyLabRole
+      Environment:
+        Variables:
+          DeciderArn: !GetAtt decider.Arn
+      Events:
+        ApiEvent:
+          Type: HttpApi
+          Properties:
+            Path: /product/handler
+            Method: ANY
+            ApiId: !Ref AntiquelyBackendAPIGateway
+
+  # Name: bidding
+  # Type: Lambda Function
+  # Description: Bidding Lambda function that comprises of controllers and services
+  # Author: Bharatwaaj Shankaranarayanan
+  bidding:
+    Type: "AWS::Serverless::Function"
+    Properties:
+      FunctionName: !Ref LambdaBiddingFunctionName
+      Handler: bidding.handler
+      Runtime: nodejs16.x
+      CodeUri:
+        Bucket: !Ref S3TemplateBucketName
+        Key: lambda/bidding.zip
+      Description: ""
+      MemorySize: 128
+      Timeout: 3
+      Role: !Ref AntiquelyLabRole
+      Events:
+        ApiEvent:
+          Type: HttpApi
+          Properties:
+            Path: /bid/handler
+            Method: ANY
+            ApiId: !Ref AntiquelyBackendAPIGateway
+
+  # Name: users
+  # Type: Lambda Function
+  # Description: Users Lambda function that comprises of controllers and services
+  # Author: Vanshika Gohel
+  users:
+    Type: "AWS::Serverless::Function"
+    Properties:
+      FunctionName: !Ref LambdaUsersFunctionName
+      Handler: users.handler
+      Runtime: nodejs16.x
+      CodeUri:
+        Bucket: !Ref S3TemplateBucketName
+        Key: lambda/users.zip
+      Description: ""
+      MemorySize: 128
+      Timeout: 3
+      Role: !Ref AntiquelyLabRole
+      Events:
+        ApiEvent:
+          Type: HttpApi
+          Properties:
+            Path: /userOperations
+            Method: ANY
+            ApiId: !Ref AntiquelyUsersAPIGateway
+
+  # Name: users
+  # Type: Lambda Function
+  # Description: Send email lambda function that comprises of controllers and services to send notifications to users
+  # Author: Bharatwaaj Shankaranarayanan
+  sendEmail:
+    Type: "AWS::Serverless::Function"
+    Properties:
+      FunctionName: !Ref LambdaSendEmailFunctionName
+      Handler: send_email.handler
+      Runtime: nodejs16.x
+      CodeUri:
+        Bucket: !Ref S3TemplateBucketName
+        Key: lambda/sendEmail.zip
+      Description: ""
+      MemorySize: 128
+      Timeout: 3
+      Role: !Ref AntiquelyLabRole
+      Environment:
+        Variables:
+          SnsArn: !Ref AntiquelySNS
+
+  # Name: UsersTable
+  # Type: Dynamo DB Table
+  # Description: A table to store user related information
+  # Author: Vanshika Gohel
+  UsersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Ref UsersTableName
+      AttributeDefinitions:
+        - AttributeName: !Ref UsersPartitionKeyName
+          AttributeType: !Ref UsersPartitionKeyType
+      KeySchema:
+        - AttributeName: !Ref UsersPartitionKeyName
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+  # Name: ProductsTable
+  # Type: Dynamo DB Table
+  # Description: A table to store product related information
+  # Author: Bharatwaaj Shankaranarayanan
+  ProductsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Ref ProductsTableName
+      AttributeDefinitions:
+        - AttributeName: !Ref ProductsPartitionKeyName
+          AttributeType: !Ref ProductsPartitionKeyType
+      KeySchema:
+        - AttributeName: !Ref ProductsPartitionKeyName
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+  # Name: ProductsTable
+  # Type: Dynamo DB Table
+  # Description: A table to store product related information
+  # Author: Bharatwaaj Shankaranarayanan
+  BidsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Ref BidsTableName
+      AttributeDefinitions:
+        - AttributeName: !Ref BidsPartitionKeyName
+          AttributeType: !Ref BidsPartitionKeyType
+      KeySchema:
+        - AttributeName: !Ref BidsPartitionKeyName
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+  # Name: ProductImageS3Bucket
+  # Type: S3 Bucket
+  # Description: An S3 Bucket for storing products images
+  # Author: Bharatwaaj Shankaranarayanan
+  S3ProductImageBucket:
+    Type: 'AWS::S3::Bucket'
+    Description: Bucket on which we will attach and test bucket policy
+    Properties:
+      BucketName: !Ref S3ProductsImageBucketName
+      AccessControl: PublicRead
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+
+  # Name: ProductImageS3BucketPolicy:
+  # Type: S3 Bucket Policy
+  # Description: S3 Bucket Policy for making the images to have Get Access to all the sub images
+  # Author: Bharatwaaj Shankaranarayanan
+  MyS3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref S3ProductImageBucket
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:*
+            Effect: Allow
+            Resource:
+              - !Sub 'arn:aws:s3:::${S3ProductImageBucket}'
+              - !Sub 'arn:aws:s3:::${S3ProductImageBucket}/*'
+            Principal:
+              AWS:
+                - '*'
+  
+  # Name: UserPool
+  # Type: AWS Cognito UserPool
+  # Description: AWS Cognito User Pool
+  # Author: Vanshika Gohel
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UsernameConfiguration: 
+        CaseSensitive: false
+      AutoVerifiedAttributes:
+        - email
+      UserPoolName: !Sub ${CognitoDomain}-user-pool
+      Schema:
+        - Name: email
+          AttributeDataType: String
+          Mutable: false
+          Required: true
+        - Name: name
+          AttributeDataType: String
+          Mutable: true
+          Required: true
+
+  # Name: UserPoolClient
+  # Type: AWS Cognito UserPoolClient
+  # Description: AWS Cognito User Pool Client
+  # Author: Vanshika Gohel
+  UserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref UserPool
+      SupportedIdentityProviders:
+        - COGNITO
+
+  # Name: UserPoolDomain
+  # Type: AWS Cognito UserPoolDomain
+  # Description: AWS Cognito User Pool Domain
+  # Author: Vanshika Gohel
+  UserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      Domain: !Ref CognitoDomain
+      UserPoolId: !Ref UserPool
+  
+  # Name: UserPoolDomain
+  # Type: AWS Cognito UserPoolDomain
+  # Description: AWS Cognito User Pool Domain
+  # Author: Vanshika Gohel
+  AntiquelyFrontend:
+    Type: AWS::ElasticBeanstalk::Application
+    Properties:
+      ApplicationName: !Ref AntiquelyFrontendAppName
+      Description: AWS Elastic Beanstalk Antiquely Application
+
+  AntiquelyVersion:
+    Type: AWS::ElasticBeanstalk::ApplicationVersion
+    Properties:
+      ApplicationName:
+        Ref: AntiquelyFrontend
+      Description: AWS ElasticBeanstalk Antiquely Application Version
+      SourceBundle:
+        S3Bucket: !Ref S3TemplateBucketName
+        S3Key: !Ref S3KeyNameForCode
+
+  AntiquelyConfiguration:
+    Type: AWS::ElasticBeanstalk::ConfigurationTemplate
+    Properties:
+      ApplicationName:
+        Ref: AntiquelyFrontend
+      Description: AWS ElasticBeanstalk Antiquely Configuration Template
+      OptionSettings:
+      - Namespace: aws:elasticbeanstalk:environment
+        OptionName: EnvironmentType
+        Value: LoadBalanced
+      - Namespace: aws:elasticbeanstalk:environment
+        OptionName: ServiceRole
+        Value: 'LabRole'
+      - Namespace: aws:autoscaling:launchconfiguration
+        OptionName: IamInstanceProfile
+        Value: 'LabInstanceProfile'
+      # Application Environment Variables
+      - Namespace: aws:elasticbeanstalk:application:environment
+        OptionName: REACT_APP_COGNITO_USER_POOL_ID
+        Value: !Ref UserPool
+      - Namespace: aws:elasticbeanstalk:application:environment
+        OptionName: REACT_APP_COGNITO_CLIENT_ID
+        Value: !Ref UserPoolClient
+      - Namespace: aws:elasticbeanstalk:application:environment
+        OptionName: REACT_APP_BACKEND_API_URL
+        Value: !Sub 'https://${AntiquelyBackendAPIGateway}.execute-api.us-east-1.amazonaws.com'
+      - Namespace: aws:elasticbeanstalk:application:environment
+        OptionName: REACT_APP_USERS_API_URL
+        Value: !Sub 'https://${AntiquelyUsersAPIGateway}.execute-api.us-east-1.amazonaws.com'
+      - Namespace: aws:elasticbeanstalk:application:environment
+        OptionName: REACT_APP_S3_IMAGES_BUCKET
+        Value: !Ref S3ProductsImageBucketName
+      SolutionStackName: "64bit Amazon Linux 2 v5.5.4 running Node.js 16"
+
+  AntiquelyEnvironment:
+    Type: AWS::ElasticBeanstalk::Environment
+    Properties:
+      ApplicationName:
+        Ref: AntiquelyFrontend
+      Description: AWS ElasticBeanstalk Antiquely Environment
+      TemplateName:
+        Ref: AntiquelyConfiguration
+      VersionLabel:
+        Ref: AntiquelyVersion

@@ -1,0 +1,46 @@
+[
+  {
+    "ParameterKey": "AntiquelyLabRole",
+    "ParameterValue": "arn:aws:iam::103757046369:role/LabRole"
+  },
+  {
+    "ParameterKey": "S3TemplateBucketName",
+    "ParameterValue": "antiquely-templates-production"
+  },
+  {
+    "ParameterKey": "S3ProductsImageBucketName",
+    "ParameterValue": "antiquely-product-images"
+  },
+  {
+    "ParameterKey": "AntiquelySNSTopicName",
+    "ParameterValue": "AntiquelySNSProd"
+  },
+  {
+    "ParameterKey": "LambdaDeciderFunctionName",
+    "ParameterValue": "decider-prod"
+  },
+  {
+    "ParameterKey": "LambdaProductsFunctionName",
+    "ParameterValue": "products-prod"
+  },
+  {
+    "ParameterKey": "LambdaBiddingFunctionName",
+    "ParameterValue": "bids-prod"
+  },
+  {
+    "ParameterKey": "LambdaUsersFunctionName",
+    "ParameterValue": "users-prod"
+  },
+  {
+    "ParameterKey": "LambdaSendEmailFunctionName",
+    "ParameterValue": "email-prod"
+  },
+  {
+    "ParameterKey": "AntiquelyFrontendAppName",
+    "ParameterValue": "AntiquelyFI"
+  },
+  {
+    "ParameterKey": "CognitoDomain",
+    "ParameterValue": "antiquelycognito"
+  }
+]
