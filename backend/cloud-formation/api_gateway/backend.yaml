@@ -1,6 +1,6 @@
 openapi: "3.0.1"
 info:
-  title: "Antiquely Backend"
+  title: "Backend"
   version: "2022-07-13 23:27:00UTC"
 servers:
 - url: "https://4o2g1poz9d.execute-api.us-east-1.amazonaws.com/{basePath}"
@@ -17,7 +17,8 @@ paths:
         payloadFormatVersion: "2.0"
         type: "aws_proxy"
         httpMethod: "POST"
-        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:103757046369:function:bid/invocations"
+        uri: 
+          Fn::Sub: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${bidding.Arn}/invocations"
         connectionType: "INTERNET"
   /product/handler:
     x-amazon-apigateway-any-method:
@@ -28,7 +29,8 @@ paths:
         payloadFormatVersion: "2.0"
         type: "aws_proxy"
         httpMethod: "POST"
-        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:103757046369:function:product/invocations"
+        uri: 
+          Fn::Sub: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${product.Arn}/invocations"
         connectionType: "INTERNET"
 x-amazon-apigateway-cors:
   allowMethods:

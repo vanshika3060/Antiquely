@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import UserPool from "./UserPool";
 import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
 
@@ -7,6 +7,7 @@ export default function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const history = useHistory();
 
   const onSubmit = (event) => {
 
@@ -26,6 +27,7 @@ export default function Login() {
       onSuccess: (data) =>
       {
         console.log("on Success: ",data);
+        history.push('/admin/dashboard');
       },
       onFailure: (err) =>
       {

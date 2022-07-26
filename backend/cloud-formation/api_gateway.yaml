@@ -5,11 +5,6 @@ Resources:
   AntiquelyAPIGateway:
     Type: AWS::Serverless::HttpApi
     Properties:
-      Name: Antiquely AWS Api Gateway
-      # Cors: 
-      #   AllowHeaders: "*"
-      #   AllowMethods: "*"
-      #   AllowOrigin: "*"
       StageName: api
       DefinitionUri:
         Bucket: antiquely-templates-bharat

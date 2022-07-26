@@ -19,7 +19,6 @@ export default function CardSettings() {
   const [showModal, setShowModal] = React.useState(false);
 
   const hiddenFileInput = React.useRef(null);
-  let s3ProductsURL = "https://csci5409-products.s3.amazonaws.com/images/";
 
   const handleFileUploadBtnClick = (event) => {
     hiddenFileInput.current.click();
@@ -70,6 +69,7 @@ export default function CardSettings() {
       console.error("Unable to generate pre-signed URL.");
     }
     try {
+      let s3ProductsURL = process.env.REACT_APP_S3_IMAGES_BUCKET ? `https://${process.env.REACT_APP_S3_IMAGES_BUCKET}.s3.amazonaws.com/images/`: "https://csci5409-products.s3.amazonaws.com/images/";
       const response = await api.uploadFileToS3({
         url: preSignedURL?.data?.data,
         data: fileUploaded,

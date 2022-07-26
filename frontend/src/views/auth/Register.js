@@ -1,8 +1,8 @@
 import UserPool from "./UserPool";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 const { default: axios } = require('axios')
-
 
 
 
@@ -20,6 +20,7 @@ export default function Register() {
   const [errorPassword, setErrorPassword] = useState('');
   const [errorConfirmPassword, setErrorConfirmPassword] = useState('');
   var uuid = require('uuid');
+  const history = useHistory();
 
 
   const onSubmit = (event) => {
@@ -36,7 +37,7 @@ export default function Register() {
     try {
       const user_id = uuid.v4();
       axios({
-        url: process.env.REACT_APP_USERS_API_URL || "https://ke0q79ybf5.execute-api.us-east-1.amazonaws.com/userOperations",
+        url: process.env.REACT_APP_USERS_API_URL ? process.env.REACT_APP_USERS_API_URL + "/userOperations" : "https://ke0q79ybf5.execute-api.us-east-1.amazonaws.com/userOperations",
         method: 'POST',
         data: {
           
@@ -51,7 +52,7 @@ export default function Register() {
         (response) => {
           console.log(response)
           localStorage.setItem("USER_ID", user_id.toString());
-
+          history.push('/admin/dashboard');
         },
         (error) => {
           console.log(error)
